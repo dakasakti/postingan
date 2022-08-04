@@ -16,7 +16,7 @@ func UserPath(e *echo.Echo, uc uc.UserController) {
 
 func PostTypePath(e *echo.Echo, pt pt.PostTypeController) {
 	e.POST("types", pt.Register, middlewares.JWTSign())
-	e.GET("types", pt.GetAll, middlewares.JWTSign())
+	e.GET("types", pt.GetAll)
 	e.GET("types/:id", pt.GetById)
 	e.PUT("types/:id", pt.UpdateById, middlewares.JWTSign())
 	e.DELETE("types/:id", pt.DeleteById, middlewares.JWTSign())
@@ -24,7 +24,7 @@ func PostTypePath(e *echo.Echo, pt pt.PostTypeController) {
 
 func PostPath(e *echo.Echo, ps ps.PostController) {
 	e.POST("/posts", ps.Register, middlewares.JWTSign())
-	e.GET("/posts", ps.GetAll, middlewares.JWTSign())
+	e.GET("/posts", ps.GetAll)
 	e.GET("/posts/:id", ps.GetById)
 	e.PUT("/posts/:id", ps.UpdateById, middlewares.JWTSign())
 	e.DELETE("/posts/:id", ps.DeleteById, middlewares.JWTSign())
