@@ -1,0 +1,408 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/dakasakti/Blog/1.0.0
+info:
+  description: This is a simple API Blog
+  version: "1.0.0"
+  title: Simple Blog API
+  contact:
+    email: dakasakti.id@gmail.com
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+paths:
+  /register:
+    post:
+      tags:
+        - Users
+      summary: register account
+      description: membuat akun baru untuk melakukan posting di blog
+      requestBody:
+        description: input required
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+      responses:
+        "201":
+          description: "akun berhasil dibuat"
+        "400":
+          description: "invalid input data"
+  /login:
+    post:
+      tags:
+        - Users
+      summary: login account
+      description: melakukan login agar bisa posting
+      requestBody:
+        description: input required
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        "200":
+          description: "berhasil login dan mendapat akses token"
+        "400":
+          description: "invalid input data"
+        "401":
+          description: "email atau password salah"
+  /types:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Post Types
+      summary: create post type
+      description: membuat kategori postingan
+      requestBody:
+        description: input required
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostTypes"
+      responses:
+        "201":
+          description: "berhasil membuat kategori postingan"
+        "400":
+          description: "invalid input data"
+    get:
+      tags:
+        - Post Types
+      summary: get all data post type
+      description: mengambil semua data kategori postingan
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PostTypeItem"
+        "404":
+          description: data tidak ditemukan
+  /types/{id}:
+    get:
+      tags:
+        - Post Types
+      summary: get one data post type
+      description: mengambil satu data kategori postingan
+      parameters:
+        - in: path
+          name: id
+          description: hanya menggunakan id kategori
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostTypeItem"
+        "400":
+          description: input parameter salah
+        "404":
+          description: data tidak ditemukan
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Post Types
+      summary: update one data post type
+      description: memperbarui data kategori postingan
+      parameters:
+        - in: path
+          name: id
+          description: hanya menggunakan id kategori
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: input opsional
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostTypes"
+      responses:
+        "200":
+          description: berhasil memperbarui data
+        "400":
+          description: input parameter salah
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Post Types
+      summary: delete one data post type
+      description: memperbarui data kategori postingan
+      parameters:
+        - in: path
+          name: id
+          description: hanya menggunakan id kategori
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: berhasil menghapus data
+        "400":
+          description: input parameter salah
+  /posts:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Posts
+      summary: create post
+      description: membuat postingan
+      requestBody:
+        description: input required
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Posts"
+      responses:
+        "201":
+          description: "berhasil membuat postingan"
+        "400":
+          description: "invalid input data"
+    get:
+      tags:
+        - Posts
+      summary: get all data post
+      description: mengambil semua data postingan
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PostItem"
+        "404":
+          description: data tidak ditemukan
+  /posts/{id}:
+    get:
+      tags:
+        - Posts
+      summary: get one data post
+      description: mengambil satu data postingan
+      parameters:
+        - in: path
+          name: id
+          description: hanya menggunakan id postingan
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostItem"
+        "400":
+          description: input parameter salah
+        "404":
+          description: data tidak ditemukan
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Posts
+      summary: update one data post
+      description: memperbarui data postingan
+      parameters:
+        - in: path
+          name: id
+          description: hanya menggunakan id postingan
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: input opsional
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Posts"
+      responses:
+        "200":
+          description: berhasil memperbarui data
+        "400":
+          description: input parameter salah
+        "403":
+          description: user tidak diizinkan
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Posts
+      summary: delete one data post
+      description: memperbarui data postingan
+      parameters:
+        - in: path
+          name: id
+          description: hanya menggunakan id postingan
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: berhasil menghapus data
+        "400":
+          description: input parameter salah
+        "403":
+          description: user tidak diizinkan
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Register:
+      type: object
+      required:
+        - fullname
+        - phone
+        - email
+        - password
+      properties:
+        fullname:
+          type: string
+          example: Testing User
+        phone:
+          type: string
+          example: "081234567890"
+        email:
+          type: string
+          example: example@gmail.com
+        password:
+          type: string
+          example: example
+    Login:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: example@gmail.com
+        password:
+          type: string
+          example: example
+    PostTypes:
+      type: object
+      required:
+        - jenis
+        - type
+      properties:
+        jenis:
+          type: string
+          example: Opini
+        type:
+          type: string
+          example: Artikel
+    Posts:
+      type: object
+      required:
+        - title
+        - description
+        - post_type_id
+      properties:
+        title:
+          type: string
+          example: Ini adalah judul
+        description:
+          type: string
+          example: Ini adalah deskripsi
+        post_type_id:
+          type: integer
+          example: 1
+    PostTypeItem:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: successfully retrieved
+        data:
+          $ref: "#/components/schemas/PostTypeResponse"
+    PostItem:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: successfully retrieved
+        data:
+          $ref: "#/components/schemas/PostResponse"
+    PostTypeResponse:
+      properties:
+        id:
+          type: integer
+          example: 1
+        jenis:
+          type: string
+          example: "Opini"
+        type:
+          type: string
+          example: "Artikel"
+        author:
+          $ref: "#/components/schemas/Author"
+        created_at:
+          type: string
+          format: time
+          example: "2022-08-02T17:13:55.956+07:00"
+        updated_at:
+          type: string
+          format: time
+          example: "2022-08-02T17:13:55.956+07:00"
+      type: object
+    PostResponse:
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "ini adalah judul"
+        description:
+          type: string
+          example: "ini adalah deskripsi"
+        post_type:
+          $ref: "#/components/schemas/PostTypeResponse"
+        author:
+          $ref: "#/components/schemas/Author"
+        created_at:
+          type: string
+          format: time
+          example: "2022-08-02T17:13:55.956+07:00"
+        updated_at:
+          type: string
+          format: time
+          example: "2022-08-02T17:13:55.956+07:00"
+      type: object
+    Author:
+      properties:
+        fullname:
+          type: string
+          example: example
+      type: object
